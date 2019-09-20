@@ -10,11 +10,30 @@ gulp.task('1-init', async function () {
     });
 });
 
+const wsDir = "c:/jnWs/";
+gulp.task('00-clone', async function () {
+    git.clone('https://github.com/AMPCo/ampco_com_au.git', {args: wsDir + 'Ampco'}, function (err) {
+    });
+});
+
+gulp.task('00-removeremote', async function () {
+    git.removeRemote('origin', function (err) {
+        if (err) throw err;
+    });
+});
+
+gulp.task('00-addremote', async function () {
+    git.addRemote('origin', 'https://github.com/jho2/GitTest.git', function (err) {
+        if (err) throw err;
+    });
+});
+
 gulp.task('0-status', async function () {
     git.status({args: '--porcelain'}, function (err, stdout) {
         if (err) throw err;
     });
 });
+
 
 const NL = "\n";
 const wd = "c:/jnWs/Gulp/my-project/";
@@ -23,20 +42,10 @@ gulp.task('2-ignore', function (cb) {
     fs.writeFile(wd + '.gitignore', text, cb);
 });
 
-const wsDir = "c:/jnWs/";
-gulp.task('0-clone', async function () {
-    git.clone('https://github.com/AMPCo/ampco_com_au.git', {args: wsDir + 'Ampco'}, function (err) {
-    });
-});
 
 gulp.task('3-add', async function () {
     return gulp.src(['**/*.js', '../assets/**/*'])
         .pipe(git.add());
-});
-
-gulp.task('4-commit', function () {
-    return gulp.src(['**/*.js', '../assets/**/*'])
-        .pipe(git.commit(['Second commit', 'additional message 1', 'additional message 2']));
 });
 
 gulp.task('commit', async function () {
@@ -119,3 +128,15 @@ gulp.task('diff', async function () {
         .pipe(gulp.dest('./diff.out'));
 });
 
+gulp.task('4-commit', function () {
+    return gulp.src(['**/*.js', '../assets/**/*'])
+        .pipe(git.commit(['Third commit', 'additional message 1', 'additional message 2']));
+});
+
+
+
+gulp.task('5-push', async function () {
+    git.push('origin', 'master', function (err) {
+        if (err) throw err;
+    });
+});
