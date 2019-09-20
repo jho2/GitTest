@@ -16,6 +16,11 @@ gulp.task('00-clone', async function () {
     });
 });
 
+gulp.task('00-rm', function () {
+    return gulp.src(['**/*.js', '!**/gulpfile_Git.js'])
+        .pipe(git.rm());
+});
+
 gulp.task('00-removeremote', async function () {
     git.removeRemote('origin', function (err) {
         if (err) throw err;
@@ -130,9 +135,8 @@ gulp.task('diff', async function () {
 
 gulp.task('4-commit', function () {
     return gulp.src(['**/*.js', '../assets/**/*'])
-        .pipe(git.commit(['Third commit', 'additional message 1', 'additional message 2']));
+        .pipe(git.commit(['Fourth commit', 'additional message 1', 'additional message 2']));
 });
-
 
 
 gulp.task('5-push', async function () {
